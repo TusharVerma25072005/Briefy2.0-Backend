@@ -20,7 +20,6 @@ export default function SetPasswordContent() {
     if (data.success) {
         window.location.href = data.redirectUrl;
     }
-    alert(data.message);
   };
 
   return (
