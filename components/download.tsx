@@ -15,7 +15,7 @@ export default function DownloadApp() {
           <a
             href="https://play.google.com"
             target="_blank"
-            className="inline-flex items-center gap-3 bg-black text-white px-6 py-3 rounded-xl hover:scale-105 transition shadow-lg"
+            className="inline-flex items-center gap-3 bg-black text-white px-6 pt-4 pr-6 rounded-xl hover:scale-105 transition shadow-lg"
           >
             <img
               src="/google_play.png"
@@ -31,7 +31,7 @@ export default function DownloadApp() {
 
         <div className="flex justify-center">
           <img
-            src="/app-mockup.png"
+            src="/fp.jpeg"
             alt="Briefy Mobile App"
             className="w-[280px] md:w-[340px] drop-shadow-2xl"
           />

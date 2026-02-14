@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -18,50 +20,17 @@ export default function SignupPage() {
         <h2 className="text-2xl font-bold text-center text-gray-900">
           Create Account
         </h2>
-        <p className="text-gray-600 text-center mt-1 mb-6">
-          Start summarizing emails instantly
+
+        <p className="text-gray-600 text-center mt-2 mb-6">
+          Continue by connecting Gmail
         </p>
 
-        <form className="space-y-5">
-
-          <div>
-            <label className="text-sm font-medium text-gray-700">
-              Email Address
-            </label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              className="w-full mt-2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              className="w-full mt-2 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Must be at least 8 characters
-            </p>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:opacity-90 transition"
-          >
-            Create Account
-          </button>
-        </form>
-
-        <p className="text-xs text-gray-400 text-center mt-4">
-          By creating an account, you agree to our{" "}
-          <span className="text-blue-600 cursor-pointer">Terms</span> &{" "}
-          <span className="text-blue-600 cursor-pointer">Privacy Policy</span>
-        </p>
+        <button
+          onClick={() => window.location.href = "/api/auth/gmail/login"}
+          className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:opacity-90 transition"
+        >
+          Continue with Gmail
+        </button>
 
       </div>
     </div>
