@@ -1,4 +1,3 @@
-import { google } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -10,37 +9,50 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "No code received" }, { status: 400 });
     }
 
-    const oauth2Client = new google.auth.OAuth2(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI
+    const tokenRes = await fetch(
+      "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          client_id: process.env.AZURE_CLIENT_ID!,
+          client_secret: process.env.AZURE_CLIENT_SECRET!,
+          code,
+          redirect_uri: process.env.AZURE_REDIRECT_URI!,
+          grant_type: "authorization_code",
+        }),
+      }
     );
 
-    const { tokens } = await oauth2Client.getToken(code);
-    oauth2Client.setCredentials(tokens);
+    const tokens = await tokenRes.json();
 
-    const refreshToken = tokens.refresh_token;
     const accessToken = tokens.access_token;
+    const refreshToken = tokens.refresh_token;
 
-    const oauth2 = google.oauth2({
-      auth: oauth2Client,
-      version: "v2",
-    });
+    const userRes = await fetch(
+      "https://graph.microsoft.com/v1.0/me",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
-    const userInfo = await oauth2.userinfo.get();
+    const userData = await userRes.json();
+    const userEmail = userData.mail || userData.userPrincipalName;
 
-    const userEmail = userInfo.data.email;
-
-    console.log("User Gmail:", userEmail);
+    console.log("User Outlook:", userEmail);
     console.log("Refresh Token:", refreshToken);
     console.log("Access Token:", accessToken);
 
     return NextResponse.redirect(
-      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=gmail`
+      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=outlook`
     );
 
   } catch (error) {
-    console.error("OAuth Error:", error);
+    console.error("Outlook OAuth Error:", error);
     return NextResponse.json({ error: "OAuth failed" }, { status: 500 });
   }
 }
