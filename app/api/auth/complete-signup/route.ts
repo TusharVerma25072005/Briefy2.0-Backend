@@ -6,7 +6,8 @@ export async function POST(req: NextRequest) {
 
   console.log("Signup Gmail:", gmail);
   console.log("User Password:", password);
-  return NextResponse.redirect(
-      `briefy://auth-success?gmail=test@gmail.com&token=1234567890`
-    );
+  return NextResponse.json({
+    success: true,
+    redirectUrl: `briefy://auth-success?gmail=${gmail}&token=1234567890`
+  });
 }

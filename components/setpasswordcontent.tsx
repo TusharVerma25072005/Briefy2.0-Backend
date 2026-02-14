@@ -17,6 +17,9 @@ export default function SetPasswordContent() {
     });
 
     const data = await res.json();
+    if (data.success) {
+        window.location.href = data.redirectUrl;
+    }
     alert(data.message);
   };
 

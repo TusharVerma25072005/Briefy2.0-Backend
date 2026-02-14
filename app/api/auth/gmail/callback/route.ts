@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      "https://briefy2-0-backend.onrender.com/api/auth/gmail/callback"
+      process.env.GOOGLE_REDIRECT_URI
     );
 
     const { tokens } = await oauth2Client.getToken(code);
