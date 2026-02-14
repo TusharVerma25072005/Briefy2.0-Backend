@@ -11,8 +11,10 @@ export async function GET() {
       "profile",
       "email",
       "offline_access",
-      "https://graph.microsoft.com/Mail.Read"
+      "Mail.Read"
     ].join(" "),
+    prompt: "consent", 
+    state: "briefy_auth", 
   });
 
   const authUrl =
