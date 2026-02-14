@@ -11,6 +11,7 @@ export async function GET() {
       "profile",
       "email",
       "offline_access",
+      "User.Read",
       "Mail.Read"
     ].join(" "),
     prompt: "consent", 
