@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
 
     const userData = await userRes.json();
     const userEmail = userData.mail || userData.userPrincipalName;
-
+    console.log("User Data:", userData);
     console.log("User Outlook:", userEmail);
     console.log("Refresh Token:", refreshToken);
     console.log("Access Token:", accessToken);
