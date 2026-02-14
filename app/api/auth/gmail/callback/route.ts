@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
-      "http://localhost:3000/api/auth/gmail/callback"
+      "https://briefy2-0-backend.onrender.com/api/auth/gmail/callback"
     );
 
     const { tokens } = await oauth2Client.getToken(code);
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     console.log("Access Token:", accessToken);
 
     return NextResponse.redirect(
-      `http://localhost:3000/set-password?email=${userEmail}&provider=gmail`
+      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=gmail`
     );
 
   } catch (error) {
