@@ -14,7 +14,8 @@ export default function SetPasswordContent() {
   let imageSrc = "";
   if (photo) {
     if (provider === "gmail") {
-      imageSrc = photo;
+
+      imageSrc = decodeURIComponent(photo);
     } else if (provider === "outlook") {
       imageSrc = `data:image/jpeg;base64,${photo}`;
     }
