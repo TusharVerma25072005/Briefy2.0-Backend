@@ -15,7 +15,7 @@ export default function SetPasswordContent() {
   if (photo) {
     if (provider === "gmail") {
 
-      imageSrc = decodeURIComponent(photo);
+      imageSrc = photo
     } else if (provider === "outlook") {
       imageSrc = `data:image/jpeg;base64,${photo}`;
     }
@@ -41,7 +41,7 @@ export default function SetPasswordContent() {
         <h2 className="text-xl font-bold mb-2">Create Password</h2>
         <span className="flex items-center justify-center">
           {imageSrc && (
-            <Image
+            <img
               src={imageSrc}
               alt="Profile Photo"
               width={96}
