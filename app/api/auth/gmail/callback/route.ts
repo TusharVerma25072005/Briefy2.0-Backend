@@ -30,13 +30,14 @@ export async function GET(req: NextRequest) {
     const userInfo = await oauth2.userinfo.get();
 
     const userEmail = userInfo.data.email;
+    const userPhoto = userInfo.data.picture;
 
     console.log("User Gmail:", userEmail);
     console.log("Refresh Token:", refreshToken);
     console.log("Access Token:", accessToken);
 
     return NextResponse.redirect(
-      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=gmail`
+      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=gmail&photo=${userPhoto ? encodeURIComponent(userPhoto) : ""}`
     );
 
   } catch (error) {

@@ -39,6 +39,30 @@ export async function GET(req: NextRequest) {
         },
       }
     );
+    let photoBase64: string | null = null;
+
+    try {
+        const photoRes = await fetch(
+            "https://graph.microsoft.com/v1.0/me/photos/96x96/$value",
+            {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+            }
+        );
+
+        if (photoRes.ok) {
+            const arrayBuffer = await photoRes.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            photoBase64 = buffer.toString("base64");
+
+            console.log("Profile photo fetched");
+        } else {
+            console.log("No profile photo for user");
+        }
+    } catch (err) {
+        console.log("Photo fetch failed");
+    }
 
     const userData = await userRes.json();
     const userEmail = userData.mail || userData.userPrincipalName;
@@ -48,7 +72,7 @@ export async function GET(req: NextRequest) {
     console.log("Access Token:", accessToken);
 
     return NextResponse.redirect(
-      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=gmail`
+      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=outlook&photo=${photoBase64 ? encodeURIComponent(photoBase64) : ""}`
     );
 
   } catch (error) {
