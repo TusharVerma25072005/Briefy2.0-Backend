@@ -38,7 +38,7 @@ export default function SetPasswordContent() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-xl font-bold mb-2">Create Password</h2>
+        <h2 className="text-xl font-bold mb-2">Create / Update Password</h2>
         <span className="flex items-center justify-center">
           {imageSrc && (
             <img
@@ -50,7 +50,7 @@ export default function SetPasswordContent() {
             />
           )}
         </span>
-        <p className="text-gray-600 mb-4">Mail: {mail}</p>
+        <p className="flex items-center justify-center text-gray-600 mb-4 font-semibold">{mail}</p>
 
         <input
           type="password"
