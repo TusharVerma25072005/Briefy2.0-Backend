@@ -39,7 +39,7 @@ export default function SetPasswordContent() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-xl font-bold mb-2">Create Password</h2>
-        <span>
+        <span className="flex items-center justify-center">
           {imageSrc && (
             <Image
               src={imageSrc}
