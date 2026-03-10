@@ -48,7 +48,7 @@ export default function SetPasswordContent() {
             />
           )}
         </span>
-        <p className="text-gray-600 mb-4">Gmail: {mail}</p>
+        <p className="text-gray-600 mb-4">Mail: {mail}</p>
 
         <input
           type="password"
