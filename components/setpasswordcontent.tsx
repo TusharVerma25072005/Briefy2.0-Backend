@@ -19,6 +19,7 @@ export default function SetPasswordContent() {
     } else if (provider === "outlook") {
       imageSrc = `data:image/jpeg;base64,${photo}`;
     }
+    console.log("Decoded Photo URL:", imageSrc);
   }
 
   const handleSubmit = async () => {
