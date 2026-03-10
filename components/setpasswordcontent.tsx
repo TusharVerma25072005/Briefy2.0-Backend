@@ -9,6 +9,7 @@ export default function SetPasswordContent() {
   const mail = searchParams.get("email");
   const provider = searchParams.get("provider");
   const photo = searchParams.get("photo");
+  const name = searchParams.get("name");
   const [password, setPassword] = useState("");
 
   let imageSrc = "";
@@ -19,14 +20,13 @@ export default function SetPasswordContent() {
     } else if (provider === "outlook") {
       imageSrc = `data:image/jpeg;base64,${photo}`;
     }
-    console.log("Decoded Photo URL:", imageSrc);
   }
 
   const handleSubmit = async () => {
     const res = await fetch("/api/auth/complete-signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mail, password, provider, photo }),
+      body: JSON.stringify({ mail, password }),
     });
 
     const data = await res.json();

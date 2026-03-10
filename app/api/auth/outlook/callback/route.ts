@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
+import prisma from "@/db/prisma";
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
@@ -70,6 +70,29 @@ export async function GET(req: NextRequest) {
     console.log("User Outlook:", userEmail);
     console.log("Refresh Token:", refreshToken);
     console.log("Access Token:", accessToken);
+    const photoURL = photoBase64 ? `data:image/jpeg;base64,${photoBase64}` : null;
+    const passwordHash = Math.random().toString(36).slice(-8); 
+    await prisma.user.upsert({
+      where: { email: userEmail },
+      update: {
+        name: userData.displayName,
+        email: userEmail,
+        provider: "outlook",
+        photo: photoURL,
+        accessToken : accessToken,
+        refreshToken : refreshToken
+      },
+      create: {
+        name: userData.displayName,
+        email: userEmail,
+        provider: "outlook",
+        photo: photoURL,
+        accessToken : accessToken,
+        refreshToken : refreshToken,
+        passwordHash: passwordHash
+      }
+    })
+
 
     return NextResponse.redirect(
       `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=outlook&photo=${photoBase64 ? encodeURIComponent(photoBase64) : ""}`

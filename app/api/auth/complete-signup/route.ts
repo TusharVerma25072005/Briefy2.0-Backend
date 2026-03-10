@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/db/prisma";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { gmail, password } = body;
+  const { mail, password } = body;
 
-  console.log("Signup Gmail:", gmail);
-  console.log("User Password:", password);
+  await prisma.user.update({
+    where: { email: mail },
+    data: {
+      passwordHash: password,
+    },
+  })
+  
   return NextResponse.json({
     success: true,
-    redirectUrl: `briefy://auth-success?gmail=${gmail}&token=1234567890`
+    redirectUrl: `briefy://auth-success?mail=${mail}`
   });
 }
