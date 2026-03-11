@@ -1,5 +1,8 @@
 import { google } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/db/prisma";
+import crypto from "crypto";
+
 
 export async function GET(req: NextRequest) {
   try {
@@ -28,13 +31,46 @@ export async function GET(req: NextRequest) {
     });
 
     const userInfo = await oauth2.userinfo.get();
-
+    const userName = userInfo.data.name;
     const userEmail = userInfo.data.email;
     const userPhoto = userInfo.data.picture;
 
     console.log("User Gmail:", userEmail);
     console.log("Refresh Token:", refreshToken);
     console.log("Access Token:", accessToken);
+    const password = Math.random().toString(36).slice(-8);
+
+    
+    
+    
+    if(userEmail){
+      const emailHash = crypto.createHash("sha256").update(userEmail).digest("hex");
+
+      await prisma.user.upsert({
+        update : {
+          email : emailHash,
+          name : userName ? userName : "No Name",
+          provider : "gmail",
+          photo : userPhoto,
+          accessToken : accessToken,
+          refreshToken : refreshToken
+          
+        },
+        create: {
+          email: emailHash,
+          name: userName ? userName : "No Name",
+          provider: "gmail",
+          photo: userPhoto,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          passwordHash: password
+        }
+        ,where : {  
+          email : emailHash
+        }
+      })
+    }
+
 
     return NextResponse.redirect(
       `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=gmail&photo=${userPhoto ? encodeURIComponent(userPhoto) : ""}`

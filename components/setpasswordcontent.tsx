@@ -9,24 +9,24 @@ export default function SetPasswordContent() {
   const mail = searchParams.get("email");
   const provider = searchParams.get("provider");
   const photo = searchParams.get("photo");
+  const name = searchParams.get("name");
   const [password, setPassword] = useState("");
 
   let imageSrc = "";
   if (photo) {
     if (provider === "gmail") {
 
-      imageSrc = decodeURIComponent(photo);
+      imageSrc = photo
     } else if (provider === "outlook") {
       imageSrc = `data:image/jpeg;base64,${photo}`;
     }
-    console.log("Decoded Photo URL:", imageSrc);
   }
 
   const handleSubmit = async () => {
     const res = await fetch("/api/auth/complete-signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mail, password, provider, photo }),
+      body: JSON.stringify({ mail, password }),
     });
 
     const data = await res.json();
@@ -38,10 +38,10 @@ export default function SetPasswordContent() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-xl font-bold mb-2">Create Password</h2>
-        <span>
+        <h2 className="text-xl font-bold mb-2">Create / Update Password</h2>
+        <span className="flex items-center justify-center">
           {imageSrc && (
-            <Image
+            <img
               src={imageSrc}
               alt="Profile Photo"
               width={96}
@@ -50,7 +50,7 @@ export default function SetPasswordContent() {
             />
           )}
         </span>
-        <p className="text-gray-600 mb-4">Mail: {mail}</p>
+        <p className="flex items-center justify-center text-gray-600 mb-4 font-semibold">{mail}</p>
 
         <input
           type="password"

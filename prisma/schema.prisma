@@ -17,6 +17,8 @@ model User {
   name          String
   email         String   @id @unique
   passwordHash  String
+  provider      String
+  photo         String?
   createdAt     DateTime @default(now())
   accessToken   String?
   refreshToken  String?
