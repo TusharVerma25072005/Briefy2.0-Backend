@@ -34,6 +34,7 @@ export default function SetPasswordContent() {
     const data = await res.json();
     if (data.success) {
       window.location.href = data.redirectUrl;
+      alert("Signup completed successfully! Login to your App.");
     }
   };
 
