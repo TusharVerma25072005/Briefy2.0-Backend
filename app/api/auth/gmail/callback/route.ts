@@ -1,6 +1,9 @@
 import { google } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
+import crypto from "crypto";
+
+
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
@@ -36,11 +39,16 @@ export async function GET(req: NextRequest) {
     console.log("Refresh Token:", refreshToken);
     console.log("Access Token:", accessToken);
     const password = Math.random().toString(36).slice(-8);
+
+    
+    
+    
     if(userEmail){
+      const emailHash = crypto.createHash("sha256").update(userEmail).digest("hex");
 
       await prisma.user.upsert({
         update : {
-          email : userEmail,
+          email : emailHash,
           name : userName ? userName : "No Name",
           provider : "gmail",
           photo : userPhoto,
@@ -49,7 +57,7 @@ export async function GET(req: NextRequest) {
           
         },
         create: {
-          email: userEmail,
+          email: emailHash,
           name: userName ? userName : "No Name",
           provider: "gmail",
           photo: userPhoto,
@@ -58,7 +66,7 @@ export async function GET(req: NextRequest) {
           passwordHash: password
         }
         ,where : {  
-          email : userEmail
+          email : emailHash
         }
       })
     }

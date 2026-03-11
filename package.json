@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^7.3.0",
+    "crypto": "^1.0.1",
     "googleapis": "^171.4.0",
     "mongodb": "^7.0.0",
     "mongoose": "^9.1.5",

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db/prisma";
+import crypto from "crypto";
+
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
@@ -72,11 +74,15 @@ export async function GET(req: NextRequest) {
     console.log("Access Token:", accessToken);
     const photoURL = photoBase64 ? `data:image/jpeg;base64,${photoBase64}` : null;
     const passwordHash = Math.random().toString(36).slice(-8); 
+
+    const hashEmail = crypto.createHash("sha256").update(userEmail).digest("hex");
+
+
     await prisma.user.upsert({
-      where: { email: userEmail },
+      where: { email: hashEmail },
       update: {
         name: userData.displayName,
-        email: userEmail,
+        email: hashEmail,
         provider: "outlook",
         photo: photoURL,
         accessToken : accessToken,
@@ -84,7 +90,7 @@ export async function GET(req: NextRequest) {
       },
       create: {
         name: userData.displayName,
-        email: userEmail,
+        email: hashEmail,
         provider: "outlook",
         photo: photoURL,
         accessToken : accessToken,
