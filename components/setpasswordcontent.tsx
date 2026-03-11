@@ -11,13 +11,12 @@ export default function SetPasswordContent() {
   const provider = searchParams.get("provider");
   const name = searchParams.get("name");
   const [password, setPassword] = useState("");
-
-  let imageSrc ="";
+  const [imageSrc, setImageSrc] = useState("");
   useEffect(() => {
     const fetchImage = async () => {
       if (mail) {
         const image = await getImage(mail);
-        imageSrc = image;
+        setImageSrc(image);
       }
     };
     fetchImage();
