@@ -1,6 +1,4 @@
-export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
-
 import prisma from "@/db/prisma";
 import crypto from "crypto";
 export async function POST(req: NextRequest) {
