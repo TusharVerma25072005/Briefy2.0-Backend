@@ -4,7 +4,7 @@ import prisma from "@/db/prisma";
 import crypto from "crypto";
 
 
-export default async function POST(req: Request) {
+export async function POST(req: Request) {
     const body = await req.json();
     const {mail , password } = body;
     const hashEmail = crypto.createHash("sha256").update(mail).digest("hex");
