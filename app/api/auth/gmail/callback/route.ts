@@ -1,11 +1,12 @@
 import { google } from "googleapis";
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/db/prisma";
+// import prisma from "@/db/prisma";
 import crypto from "crypto";
 
 
 export async function GET(req: NextRequest) {
   try {
+    console.log("DATABASE_URL:", process.env.DATABASE_URL);
     const url = new URL(req.url);
     const code = url.searchParams.get("code");
 
@@ -43,33 +44,33 @@ export async function GET(req: NextRequest) {
     
     
     
-    if(userEmail){
-      const emailHash = crypto.createHash("sha256").update(userEmail).digest("hex");
+    // if(userEmail){
+    //   const emailHash = crypto.createHash("sha256").update(userEmail).digest("hex");
 
-      await prisma.user.upsert({
-        update : {
-          email : emailHash,
-          name : userName ? userName : "No Name",
-          provider : "gmail",
-          photo : userPhoto,
-          accessToken : accessToken,
-          refreshToken : refreshToken
+    //   await prisma.user.upsert({
+    //     update : {
+    //       email : emailHash,
+    //       name : userName ? userName : "No Name",
+    //       provider : "gmail",
+    //       photo : userPhoto,
+    //       accessToken : accessToken,
+    //       refreshToken : refreshToken
           
-        },
-        create: {
-          email: emailHash,
-          name: userName ? userName : "No Name",
-          provider: "gmail",
-          photo: userPhoto,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-          passwordHash: password
-        }
-        ,where : {  
-          email : emailHash
-        }
-      })
-    }
+    //     },
+    //     create: {
+    //       email: emailHash,
+    //       name: userName ? userName : "No Name",
+    //       provider: "gmail",
+    //       photo: userPhoto,
+    //       accessToken: accessToken,
+    //       refreshToken: refreshToken,
+    //       passwordHash: password
+    //     }
+    //     ,where : {  
+    //       email : emailHash
+    //     }
+    //   })
+    // }
 
 
     return NextResponse.redirect(
