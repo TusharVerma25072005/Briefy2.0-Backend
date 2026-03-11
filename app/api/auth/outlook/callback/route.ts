@@ -101,7 +101,7 @@ export async function GET(req: NextRequest) {
 
 
     return NextResponse.redirect(
-      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=outlook&photo=${photoBase64 ? encodeURIComponent(photoBase64) : ""}`
+      `https://briefy2-0-backend.onrender.com/set-password?email=${userEmail}&provider=outlook&photo=""}`
     );
 
   } catch (error) {

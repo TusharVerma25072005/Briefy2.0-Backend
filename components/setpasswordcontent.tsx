@@ -1,26 +1,28 @@
 "use client";
 
+import { getImage } from "@/app/lib/getImage";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SetPasswordContent() {
   const searchParams = useSearchParams();
   const mail = searchParams.get("email");
   const provider = searchParams.get("provider");
-  const photo = searchParams.get("photo");
   const name = searchParams.get("name");
   const [password, setPassword] = useState("");
 
-  let imageSrc = "";
-  if (photo) {
-    if (provider === "gmail") {
-
-      imageSrc = photo
-    } else if (provider === "outlook") {
-      imageSrc = `data:image/jpeg;base64,${photo}`;
-    }
-  }
+  let imageSrc ="";
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (mail) {
+        const image = await getImage(mail);
+        imageSrc = image;
+      }
+    };
+    fetchImage();
+  }, [mail]);
+  
 
   const handleSubmit = async () => {
     const res = await fetch("/api/auth/complete-signup", {
