@@ -6,6 +6,7 @@ import crypto from "crypto";
 
 export async function POST(req: Request) {
     const body = await req.json();
+    console.log("DATABASE_URL:", process.env.DATABASE_URL);
     const {mail , password } = body;
     const hashEmail = crypto.createHash("sha256").update(mail).digest("hex");
 

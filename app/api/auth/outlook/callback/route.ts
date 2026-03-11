@@ -3,6 +3,7 @@ import prisma from "@/db/prisma";
 import crypto from "crypto";
 
 export async function GET(req: NextRequest) {
+  console.log("DATABASE_URL:", process.env.DATABASE_URL);
   try {
     const url = new URL(req.url);
     const code = url.searchParams.get("code");
