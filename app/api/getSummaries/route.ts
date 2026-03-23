@@ -11,7 +11,8 @@ export async function POST(req : Request){
             summary: `Summary for email ID ${item.emailId}`,
             priority: "HIGH",    
             embedding: "dummy_embedding",
-            category: "general"
+            category: "general",
+            detailedSummary: `Detailed summary for email ID ${item.emailId}`,
         }));
 
         return NextResponse.json(summaries, { status: 200 });
