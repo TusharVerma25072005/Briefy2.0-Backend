@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 
-export async function POST(req : NextRequest){
+export async function POST(req : Request){
     try{
         const emailIds = await req.json();
         console.log("Received email IDs for summaries:", emailIds);
