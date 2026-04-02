@@ -1,20 +1,21 @@
 import { NextResponse } from "next/server";
 
 const AI_SERVER_URL = process.env.AI_SERVER_URL!;
-const API_KEY = process.env.AI_API_KEY!; // <-- add this
+const API_KEY = process.env.AI_API_KEY!; 
 
 export async function POST(req: Request) {
     try {
         const rawEmails = await req.json();
-
+        console.log("Received emails for summarization:", rawEmails);
         if (!Array.isArray(rawEmails)) {
+            console.log("Invalid payload, expected an array of emails:");
+
             return NextResponse.json(
                 { message: "Invalid payload, expected array of emails" },
                 { status: 400 }
             );
         }
 
-        // ✅ STEP 1: Upload Emails (ADD API KEY HERE)
         const uploadRes = await fetch(`${AI_SERVER_URL}/upload-emails`, {
             method: "POST",
             headers: {
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
             },
             body: JSON.stringify(rawEmails),
         });
-
+        console.log("Upload response status:", uploadRes);
         if (!uploadRes.ok) {
             const error = await uploadRes.text();
             return NextResponse.json(
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
         }).catch(err => {
             console.error("Summarization trigger failed:", err);
         });
+        console.log("Summarization triggered successfully");
 
         return NextResponse.json({
             message: "Emails uploaded and summarization started",
