@@ -5,11 +5,10 @@ const API_KEY = process.env.AI_API_KEY!;
 
 export async function POST(req: Request) {
   try {
-    const emails = await req.json(); // expects an array of emails
+    const emails = await req.json();
 
     console.log("Received emails for upload:", emails.length);
 
-    // Normalize to AI server format
     const normalized = emails.map((email: any) => ({
       id: email.id,
       text: email.body || email.text,
@@ -28,7 +27,6 @@ export async function POST(req: Request) {
       method: "POST",
       headers: {
         "X-API-Key": API_KEY,
-        // ⚠️ Do NOT set Content-Type — fetch sets it automatically with boundary
       },
       body: formData,
     });
@@ -53,7 +51,7 @@ export async function POST(req: Request) {
 // To read the response
 const embedData = await embedderRes.json();
 console.log(embedData);
-  
+
 
     if (!res.ok) {
       return NextResponse.json({ message: "API error", error: data }, { status: res.status });
