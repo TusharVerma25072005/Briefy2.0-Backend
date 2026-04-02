@@ -5,8 +5,9 @@ const AI_SERVER_URL = process.env.AI_SERVER_URL!;
 export async function POST(req: Request) {
     try {
         const rawEmails = await req.json();
-
+        console.log("Received emails for upload:", rawEmails);
         if (!Array.isArray(rawEmails)) {
+            console.log("Invalid payload, expected an array of emails");
             return NextResponse.json(
                 { message: "Invalid payload, expected array of emails" },
                 { status: 400 }
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
 
         if (!uploadRes.ok) {
             const error = await uploadRes.text();
+            console.log("Upload failed:", error);
             return NextResponse.json(
                 { message: "Upload failed", error },
                 { status: 500 }
