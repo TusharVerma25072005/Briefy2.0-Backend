@@ -41,6 +41,8 @@ const uploadRes = await fetch(`${AI_SERVER_URL}/upload-emails`, {
   body: formData,          // ✅ NO JSON
 });
         console.log("Upload response status:", uploadRes);
+        const errorText = await uploadRes.text();
+console.log("Upload error body:", errorText);
         if (!uploadRes.ok) {
             const error = await uploadRes.text();
             return NextResponse.json(
