@@ -38,6 +38,23 @@ export async function POST(req: Request) {
     const data = await res.json();
     console.log("AI server response data:", data);
 
+    const embedderRes = await fetch("https://embedding-server-byxf.onrender.com/process-batch", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    collection: "emails",
+    limit: 20,
+    main_server_url: "https://email-summarizer-4vex.onrender.com"
+  })
+});
+
+// To read the response
+const embedData = await embedderRes.json();
+console.log(embedData);
+  
+
     if (!res.ok) {
       return NextResponse.json({ message: "API error", error: data }, { status: res.status });
     }
