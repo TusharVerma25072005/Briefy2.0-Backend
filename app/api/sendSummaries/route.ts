@@ -48,11 +48,6 @@ export async function POST(req: Request) {
   })
 });
 
-// To read the response
-const embedData = await embedderRes.json();
-console.log(embedData);
-
-
     if (!res.ok) {
       return NextResponse.json({ message: "API error", error: data }, { status: res.status });
     }
