@@ -5,28 +5,41 @@ const API_KEY = process.env.AI_API_KEY!;
 
 export async function POST(req: Request) {
   try {
-    const email = await req.json(); // { id, subject, body, metadata }
-    console.log("Received email for summarization:", email[0]);
-    // Transform to AI server format
-    const payload = {
-      id: email.id,
-      text: email.body,           // match curl's "text"
-      metadata: email.metadata || {},
-    };
+    const emails = await req.json(); // expects an array of emails
 
-    const res = await fetch(`${AI_SERVER_URL}/summarize`, {
+    console.log("Received emails for upload:", emails.length);
+
+    // Normalize to AI server format
+    const normalized = emails.map((email: any) => ({
+      id: email.id,
+      text: email.body || email.text,
+      subject: email.subject,
+      user_id: email.user_id,
+      metadata: email.metadata || {},
+    }));
+
+    // Convert list to in-memory Blob (no file needed)
+    const blob = new Blob([JSON.stringify(normalized)], { type: "application/json" });
+
+    const formData = new FormData();
+    formData.append("file", blob, "emails.json");
+
+    const res = await fetch(`${AI_SERVER_URL}/upload-emails`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         "X-API-Key": API_KEY,
+        // ⚠️ Do NOT set Content-Type — fetch sets it automatically with boundary
       },
-      body: JSON.stringify(payload),
+      body: formData,
     });
-    console.log("AI server response status:", res);
+
+    console.log("AI server response status:", res.status);
+
     const data = await res.json();
     console.log("AI server response data:", data);
+
     if (!res.ok) {
-      return NextResponse.json({ message: "API error", error: data }, { status: 500 });
+      return NextResponse.json({ message: "API error", error: data }, { status: res.status });
     }
 
     return NextResponse.json(data);
