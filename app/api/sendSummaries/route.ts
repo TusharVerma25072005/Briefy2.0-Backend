@@ -6,7 +6,7 @@ const API_KEY = process.env.AI_API_KEY!;
 export async function POST(req: Request) {
   try {
     const email = await req.json(); // { id, subject, body, metadata }
-
+    console.log("Received email for summarization:", email[0]);
     // Transform to AI server format
     const payload = {
       id: email.id,
@@ -22,9 +22,9 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify(payload),
     });
-
+    console.log("AI server response status:", res);
     const data = await res.json();
-
+    console.log("AI server response data:", data);
     if (!res.ok) {
       return NextResponse.json({ message: "API error", error: data }, { status: 500 });
     }
