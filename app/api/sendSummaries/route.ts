@@ -15,15 +15,23 @@ export async function POST(req: Request) {
                 { status: 400 }
             );
         }
+// ✅ Transform to AI server format
+const formattedEmails = rawEmails.map((email: any) => ({
+    id: email.id,
+    text: email.body,              // 🔥 body → text
+    subject: email.subject || "",
+    user_id: email.user_id || "user_1", // 🔥 required field
+}));
 
-        const uploadRes = await fetch(`${AI_SERVER_URL}/upload-emails`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-API-Key": API_KEY, // 🔥 REQUIRED
-            },
-            body: JSON.stringify(rawEmails),
-        });
+// STEP 1: Upload Emails
+const uploadRes = await fetch(`${AI_SERVER_URL}/upload-emails`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": API_KEY,
+    },
+    body: JSON.stringify(formattedEmails), // ✅ use transformed data
+});
         console.log("Upload response status:", uploadRes);
         if (!uploadRes.ok) {
             const error = await uploadRes.text();
