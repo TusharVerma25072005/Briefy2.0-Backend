@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   },
   body: JSON.stringify({
     collection: "emails",
-    limit: 20,
+    limit: 10,
     main_server_url: "https://email-summarizer-4vex.onrender.com"
   })
 });
