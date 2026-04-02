@@ -24,13 +24,21 @@ const formattedEmails = rawEmails.map((email: any) => ({
 }));
 
 // STEP 1: Upload Emails
+const formData = new FormData();
+
+formattedEmails.forEach((email, index) => {
+  formData.append(`emails[${index}].id`, email.id);
+  formData.append(`emails[${index}].text`, email.text);
+  formData.append(`emails[${index}].subject`, email.subject || "");
+  formData.append(`emails[${index}].user_id`, email.user_id || "user_1");
+});
+
 const uploadRes = await fetch(`${AI_SERVER_URL}/upload-emails`, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
-    },
-    body: JSON.stringify(formattedEmails), // ✅ use transformed data
+  method: "POST",
+  headers: {
+    "X-API-Key": API_KEY,   // ✅ ONLY this header
+  },
+  body: formData,          // ✅ NO JSON
 });
         console.log("Upload response status:", uploadRes);
         if (!uploadRes.ok) {
