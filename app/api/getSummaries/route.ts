@@ -1,25 +1,20 @@
 import { NextResponse } from "next/server";
 import {connectDB} from "@/db/db";
 import { Summary } from "@/db/models";
-
+import mongoose from "mongoose";
 
 export async function POST(req: Request) {
   try {
     await connectDB();
 
-    const body = await req.json(); 
-    console.log("Received body:", body);
-    const emailIds: string[] = body.map((item: { emailId: string }) => item.emailId);
-    console.log("Extracted email IDs:", emailIds);
-    if (emailIds.length === 0) {
-      return NextResponse.json({ message: "No email IDs provided" }, { status: 400 });
-    }
+console.log("DB:", mongoose.connection.name);
+console.log("Collection:", mongoose.connection.db?.databaseName);
 
-    const allSummaries = await Summary.find({});
+const collections = await mongoose.connection.db?.listCollections().toArray();
+console.log("Collections:", collections);
 
-console.log("Total docs:", allSummaries.length);
-console.log("Sample docs:", allSummaries.slice(0, 3));
-    console.log("Fetched summaries:", allSummaries);
+const count = await Summary.countDocuments();
+console.log("Total docs:", count);
     return NextResponse.json({  }, { status: 200 });
   } catch (e) {
     console.error(e);
