@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     const summaries = await Summary.find({
-  "summary_result.email_id": { $in: emailIds },
+  "id": { $in: emailIds },
   vector_embedding: { $exists: true, $ne: [] },
 }).select({
   "summary_result.email_id": 1,
