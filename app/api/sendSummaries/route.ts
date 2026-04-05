@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     const data = await res.json();
     console.log("AI server response data:", data);
 
-    const embedderRes = await fetch("https://embedding-server-byxf.onrender.com/process-batch", {
+    fetch("https://embedding-server-byxf.onrender.com/process-batch", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
