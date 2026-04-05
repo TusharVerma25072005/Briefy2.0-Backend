@@ -7,16 +7,14 @@ export async function POST(req: Request) {
   try {
     const emails = await req.json();
 
-    console.log("Received emails for upload:", emails);
 
     const normalized = emails.map((email: any) => ({
-      id: email.id,
+      id: email.emailId,
       text: email.body || email.text,
       subject: email.subject,
       user_id: email.user_id,
       metadata: email.metadata || {},
     }));
-    console.log("Normalized emails:", normalized);
 
     // Convert list to in-memory Blob (no file needed)
     const blob = new Blob([JSON.stringify(normalized)], {
