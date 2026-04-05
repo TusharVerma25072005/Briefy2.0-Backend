@@ -18,10 +18,9 @@ export async function connectDB() {
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI, {
-            dbName: "breify",
-            bufferCommands: false,
-        }).then((mongoose) => mongoose);
+        cached.promise = mongoose.connect(process.env.MONGODB_URI!, {
+  dbName: "email_summarizer",  // 🔥 CHANGE THIS
+}).then((mongoose) => mongoose);
     }
 
     cached.conn = await cached.promise;
