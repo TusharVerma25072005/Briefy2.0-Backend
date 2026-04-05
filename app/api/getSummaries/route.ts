@@ -15,11 +15,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "No email IDs provided" }, { status: 400 });
     }
 
-    const summaries = await Summary.find({
-  id: { $in: emailIds }
-});
-    console.log("Fetched summaries:", summaries);
-    return NextResponse.json({ summaries }, { status: 200 });
+    const allSummaries = await Summary.find({});
+
+console.log("Total docs:", allSummaries.length);
+console.log("Sample docs:", allSummaries.slice(0, 3));
+    console.log("Fetched summaries:", allSummaries);
+    return NextResponse.json({  }, { status: 200 });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ message: "Failed to fetch summaries" }, { status: 500 });
