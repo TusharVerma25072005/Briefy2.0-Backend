@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   try {
     const emails = await req.json();
 
-    console.log("Received emails for upload:", emails.length);
+    console.log("Received emails for upload:", emails);
 
     const normalized = emails.map((email: any) => ({
       id: email.id,
