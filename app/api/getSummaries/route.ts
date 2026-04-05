@@ -16,16 +16,15 @@ export async function POST(req: Request) {
     }
 
     const summaries = await Summary.find({
-  id: { $in: emailIds }, 
-  "summary_result.summary": { $exists: true, $ne: "" }, 
-  "summary_result.embedding": { $exists: true, $ne: [] },
+  "summary_result.email_id": { $in: emailIds },
+  vector_embedding: { $exists: true, $ne: [] },
 }).select({
-  id: 1,
+  "summary_result.email_id": 1,
   "summary_result.subject": 1,
   "summary_result.summary": 1,
   "summary_result.category": 1,
   "summary_result.priority": 1,
-  "summary_result.embedding": 1, 
+  vector_embedding: 1,
   _id: 0,
 });
     console.log("Fetched summaries:", summaries);
