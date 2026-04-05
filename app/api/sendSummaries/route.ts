@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       user_id: email.user_id,
       metadata: email.metadata || {},
     }));
-    console.log(normailized);
+    console.log("Normalized emails:", normalized);
 
     // Convert list to in-memory Blob (no file needed)
     const blob = new Blob([JSON.stringify(normalized)], {
