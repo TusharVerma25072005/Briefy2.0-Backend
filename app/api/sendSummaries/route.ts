@@ -47,6 +47,7 @@ export async function POST(req: Request) {
     main_server_url: "https://email-summarizer-4vex.onrender.com"
   })
 });
+console.log("Recieved embedding response");
 
     if (!res.ok) {
       return NextResponse.json({ message: "API error", error: data }, { status: res.status });
