@@ -23,7 +23,14 @@ export async function POST(req: Request) {
     const summaries = await Summary.find({
       "summary_result.email_id": { $in: emailIds },
     });
-
+    console.log(summaries);
+    summaries.forEach((doc: any, i: number) => {
+  console.log(
+    `Doc ${i}:`,
+    typeof doc.summary_result?.summary,
+    doc.summary_result?.summary
+  );
+});
     const response = summaries.map((doc: any) => {
       const fullSummary = doc.summary_result?.summary || "";
 
@@ -41,7 +48,7 @@ export async function POST(req: Request) {
       };
     });
 
-    console.log(response);
+    // console.log(response);
 
     return NextResponse.json(response, { status: 200 });
 
