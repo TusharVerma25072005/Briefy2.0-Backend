@@ -47,21 +47,16 @@ export async function POST(req: Request) {
     });
 
     const response = summaries.map((doc: any) => {
-      const normalized = normalizeSummary(
-        doc.summary_result?.summary
+      const normalizedSummary = normalizeSummary(doc.summary_result?.summary);
+      const normalizedDetailedSummary = normalizeSummary(
+        doc.summary_result?.detailedSummary
       );
-
-      const shortSummary =
-        normalized.length > 0
-          ? normalized.split("\n")[0].slice(0, 100) + "...."
-          : "";
-
       return {
         emailId: doc.summary_result?.email_id || "",
-        summary: shortSummary,
-        detailedSummary: normalized,
-        priority: doc.summary_result?.priority || "Normal",
-        category: doc.summary_result?.category || "General",
+        summary: normalizedSummary || "",
+        detailedSummary: normalizedDetailedSummary || "",
+        priority: doc.summary_result?.priority || "Low",
+        category: doc.summary_result?.category || "Other",
         embedding: JSON.stringify(doc.vector_embedding || []),
       };
     });
