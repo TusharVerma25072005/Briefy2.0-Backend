@@ -2,10 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    // Parse the JSON body sent from Android
     const body = await req.json();
-
-    // Expecting { text: "your text here" } from Android
     const text = body.text;
 
     if (!text) {
@@ -23,7 +20,7 @@ export async function POST(req: Request) {
     );
 
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
 
     return NextResponse.json(data, { status: 200 });
   } catch (e) {

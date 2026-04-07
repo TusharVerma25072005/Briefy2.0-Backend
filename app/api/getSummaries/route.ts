@@ -23,9 +23,6 @@ export async function POST(req: Request) {
     await connectDB();
 
     const body = await req.json();
-    console.log("Received request body:", body);
-
-    // ✅ safer body handling
     let emailIds: string[] = [];
 
     if (Array.isArray(body)) {
@@ -47,14 +44,6 @@ export async function POST(req: Request) {
 
     const summaries = await Summary.find({
       "summary_result.email_id": { $in: emailIds },
-    });
-
-    summaries.forEach((doc: any, i: number) => {
-      console.log(
-        `Doc ${i}:`,
-        typeof doc.summary_result?.summary,
-        doc.summary_result?.summary
-      );
     });
 
     const response = summaries.map((doc: any) => {

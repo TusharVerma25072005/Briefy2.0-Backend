@@ -4,6 +4,7 @@ import db from "@/db/prisma";
 
 export async function POST(req: NextRequest) {
     try {
+        console.log("Token refresh request received");
         const body = await req.json();
         const { email, password } = body;
         if (!email || !password) {
