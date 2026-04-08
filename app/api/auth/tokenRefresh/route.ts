@@ -6,16 +6,16 @@ export async function POST(req: NextRequest) {
     try {
         console.log("Token refresh request received");
         const body = await req.json();
-        const { email, password } = body;
-        console.log("Received email:", email);
+        const { mail, password } = body;
+        console.log("Received email:", mail);
         console.log("Received password: ", password);
-        if (!email || !password) {
+        if (!mail || !password) {
             return NextResponse.json({
                 success: false,
                 message: "Email and Password are required",
             });
         }
-        const hashEmail = crypto.createHash("sha256").update(email).digest(
+        const hashEmail = crypto.createHash("sha256").update(mail).digest(
             "hex",
         );
         console.log("Hashed email:", hashEmail);
