@@ -60,6 +60,8 @@ export async function POST(req: Request) {
         embedding: JSON.stringify(doc.vector_embedding || []),
       };
     });
+    console.log("Fetched summaries for email IDs:", emailIds);
+    console.log("Fetched summaries:", response);
 
     return NextResponse.json(response, { status: 200 });
 
