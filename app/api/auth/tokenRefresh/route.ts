@@ -7,6 +7,8 @@ export async function POST(req: NextRequest) {
         console.log("Token refresh request received");
         const body = await req.json();
         const { email, password } = body;
+        console.log("Received email:", email);
+        console.log("Received password: ", password);
         if (!email || !password) {
             return NextResponse.json({
                 success: false,
