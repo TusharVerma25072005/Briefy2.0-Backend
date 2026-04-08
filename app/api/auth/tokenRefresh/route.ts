@@ -16,11 +16,14 @@ export async function POST(req: NextRequest) {
         const hashEmail = crypto.createHash("sha256").update(email).digest(
             "hex",
         );
+        console.log("Hashed email:", hashEmail);
         const user = await db.user.findUnique({
             where: {
                 email: hashEmail,
             },
         });
+
+        console.log("User found:", !!user);
         if (!user || user.passwordHash !== password || !user.refreshToken) {
             return NextResponse.json({
                 success: false,

@@ -6,12 +6,10 @@ function normalizeSummary(val: any): string {
   if (typeof val === "string") return val;
 
   if (Array.isArray(val)) {
-    // join all elements safely
     return val.map((v) => String(v)).join(" ");
   }
 
   if (val && typeof val === "object") {
-    // fallback for unexpected objects
     return JSON.stringify(val);
   }
 
@@ -60,8 +58,6 @@ export async function POST(req: Request) {
         embedding: JSON.stringify(doc.vector_embedding || []),
       };
     });
-    console.log("Fetched summaries for email IDs:", emailIds);
-    console.log("Fetched summaries:", response);
 
     return NextResponse.json(response, { status: 200 });
 
