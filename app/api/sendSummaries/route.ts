@@ -15,8 +15,6 @@ export async function POST(req: Request) {
       user_id: email.user_id,
       metadata: email.metadata || {},
     }));
-    console.log("Normalized emails id:", normalized.map((e: any) => e.id));
-    // Convert list to in-memory Blob (no file needed)
     const blob = new Blob([JSON.stringify(normalized)], {
       type: "application/json",
     });
@@ -32,11 +30,9 @@ export async function POST(req: Request) {
       body: formData,
     });
 
-    console.log("AI server response status:", res.status);
-
+    
     const data = await res.json();
-    console.log("AI server response data:", data);
-
+    
     fetch("https://embedding-server-byxf.onrender.com/process-batch", {
       method: "POST",
       headers: {
@@ -48,8 +44,7 @@ export async function POST(req: Request) {
         main_server_url: "https://email-summarizer-4vex.onrender.com",
       }),
     });
-    console.log("Recieved embedding response");
-
+    
     if (!res.ok) {
       return NextResponse.json({ message: "API error", error: data }, {
         status: res.status,

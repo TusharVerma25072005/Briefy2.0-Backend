@@ -4,11 +4,8 @@ import db from "@/db/prisma";
 
 export async function POST(req: NextRequest) {
     try {
-        console.log("Token refresh request received");
         const body = await req.json();
         const { mail, password } = body;
-        console.log("Received email:", mail);
-        console.log("Received password: ", password);
         if (!mail || !password) {
             return NextResponse.json({
                 success: false,
@@ -18,21 +15,18 @@ export async function POST(req: NextRequest) {
         const hashEmail = crypto.createHash("sha256").update(mail).digest(
             "hex",
         );
-        console.log("Hashed email:", hashEmail);
         const user = await db.user.findUnique({
             where: {
                 email: hashEmail,
             },
         });
 
-        console.log("User found:", !!user);
         if (!user || user.passwordHash !== password || !user.refreshToken) {
             return NextResponse.json({
                 success: false,
                 message: "Something went wrong please login again",
             });
         }
-        console.log(user);
         const refreshToken = user.refreshToken;
         const provider = user.provider;
         let accessToken = "";
@@ -82,8 +76,6 @@ export async function POST(req: NextRequest) {
                     { status: 500 },
                 );
             }
-            console.log(accessToken);
-            
             return NextResponse.json({
                 success : true,
                 accessToken : accessToken,
