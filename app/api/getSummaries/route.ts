@@ -43,12 +43,14 @@ export async function POST(req: Request) {
     const summaries = await Summary.find({
       "summary_result.email_id": { $in: emailIds },
     });
+    console.log(`Fetched ${summaries.length} summaries from DB`); 
 
     const response = summaries.map((doc: any) => {
       const normalizedSummary = normalizeSummary(doc.summary_result?.summary);
       const normalizedDetailedSummary = normalizeSummary(
         doc.summary_result?.detailedSummary
       );
+      console.log(`Normalized summary for email ID ${doc.summary_result?.email_id}`);
       return {
         emailId: doc.summary_result?.email_id || "",
         summary: normalizedSummary || "",
@@ -58,6 +60,7 @@ export async function POST(req: Request) {
         embedding: JSON.stringify(doc.vector_embedding || []),
       };
     });
+
 
     return NextResponse.json(response, { status: 200 });
 
