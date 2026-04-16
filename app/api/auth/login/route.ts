@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const {mail , password } = body;
     const hashEmail = crypto.createHash("sha256").update(mail).digest("hex");
-
+    console.log("Reached here");
 
     const user = await prisma.user.findUnique({
         where : {email : hashEmail}
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
             message : "Incorrect Password"
         })
     }
-
+    console.log("User found and password correct");
     const refreshToken = user.refreshToken;
     const provider = user.provider;
     let accessToken = "";
@@ -76,6 +76,8 @@ export async function POST(req: Request) {
             );
         }
     }
+    console.log("Access token obtained successfully");
+
 
 
 
